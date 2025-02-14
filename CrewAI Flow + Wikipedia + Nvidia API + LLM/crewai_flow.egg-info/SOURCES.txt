@@ -1,0 +1,8 @@
+README.md
+main.py
+pyproject.toml
+crewai_flow.egg-info/PKG-INFO
+crewai_flow.egg-info/SOURCES.txt
+crewai_flow.egg-info/dependency_links.txt
+crewai_flow.egg-info/requires.txt
+crewai_flow.egg-info/top_level.txt
