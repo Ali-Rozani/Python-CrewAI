@@ -2,11 +2,11 @@ import wikipedia
 import os
 import wikipediaapi
 from dotenv import load_dotenv
-from crewai.flow.flow import Flow, listen, start
+from googlesearch import search  # Import the Google Search module
 
 load_dotenv()
 
-NVIDIA_API_KEY_AND_MODEL = os.getenv("NVIDIA_API_KEY")
+NVIDIA_API_KEY_AND_LLM = os.getenv("NVIDIA_API_KEY")
 
 class ProjectManagerAgent:
     def initialize_project(self, tasks):
@@ -29,7 +29,7 @@ class DeveloperAgent:
 
         # Check if the task is a question
         if "what" in task.lower() or "who" in task.lower() or "net worth" in task.lower():
-            print("Developer: Detected a question. Fetching answer from Wikipedia.")
+            print("Developer: Detected a question. Fetching answer from Wikipedia or Google.")
             try:
                 # Try using the simple wikipedia module first
                 answer = self.wiki_simple.summary(task, sentences=2)
@@ -42,7 +42,13 @@ class DeveloperAgent:
                 if page.exists():
                     return page.summary[:500]  # Return first 500 characters of the summary
                 else:
-                    return "Developer: No Wikipedia page found for this query."
+                    # If Wikipedia fails, try Google Search
+                    print("Developer: No Wikipedia page found. Trying Google Search.")
+                    google_results = list(search(task, num=1, stop=1, pause=2))  # Fetch the first result
+                    if google_results:
+                        return f"Google Search result: {google_results[0]}"
+                    else:
+                        return "Developer: No relevant information found on Wikipedia or Google."
         else:
             # If it's not a question, treat it as a regular task
             print(f"Developer: Writing code for task: {task}")
