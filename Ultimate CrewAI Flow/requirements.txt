@@ -1,0 +1,7 @@
+openai 
+wikipedia 
+google-api-python-client 
+python-dotenv
+crewai
+litellm
+google-cloud-aiplatform
